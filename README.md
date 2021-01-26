@@ -26,27 +26,74 @@ Uses the following hash of the bbb-render repo:
 Timestamp: Dec 27, 2020
 
 
-### Build
+### Prebuilt image
 
-You can build the image locally like this:
+* You can pull a prebuilt image from Docker Hub:
 
-```commandline
-docker build -t bbbr .
-```
+  ```commandline
+  docker pull fracpete/bbb-render:latest
+  ```
+
+* Run the image as follows:
+
+  ```commandline
+  docker run -u $(id -u):$(id -g) \
+      -v /local/dir:/container/dir \
+      -it fracpete/bbb-render:latest
+  ```
+
+  **NB:** `-v` maps a folder from the host into the container. You need this 
+  for downloading the presentation and converting it into a video.
 
 
-### Run
+### Build local image
 
-Once built, you can run the image with this command:
+* You can build the image locally like this:
 
-```commandline
-docker run -u $(id -u):$(id -g) \
-    -v /local/dir:/container/dir \
-    -it bbbr:latest
-```
+  ```commandline
+  docker build -t bbbr .
+  ```
 
-**NB:** `-v` maps a folder from the host into the container. You need this 
-for downloading the presentation and converting it into a video.
+* Once built, you can run the image with this command:
+
+  ```commandline
+  docker run -u $(id -u):$(id -g) \
+      -v /local/dir:/container/dir \
+      -it bbbr:latest
+  ```
+
+  **NB:** `-v` maps a folder from the host into the container. You need this 
+  for downloading the presentation and converting it into a video.
+
+
+### Pushing local image to Docker Hub
+
+The following steps push the image to Docker Hub (you need to adjust 
+the user name, of course):
+
+* log into Docker Hub
+
+  ```comandline
+  docker login
+  ```
+
+* tag the image for the push
+
+  ```commandline
+  docker tag \
+      bbbr:latest \
+      fracpete/bbb-render:latest
+  ```
+
+* push the image
+
+  ```commandline
+  docker push fracpete/bbb-render:latest
+  ```
+
+* the image is then available from:
+
+  https://hub.docker.com/u/fracpete
 
 
 ### Scripts
