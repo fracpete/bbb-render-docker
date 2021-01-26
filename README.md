@@ -59,7 +59,7 @@ The following scripts are available in the container:
 
 ## Example
 
-The following steps demonstrate how to 
+The following steps demonstrate how to convert a presentation into an `.mp4` video:
 
 * start the docker container
 
