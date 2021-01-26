@@ -1,7 +1,19 @@
 # bbb-render-docker
-Docker image for the [BigBlueButton renderer](https://github.com/plugorgau/bbb-render).
+Docker image for the [BigBlueButton render](https://github.com/plugorgau/bbb-render)
+tool, which allows you to convert recorded [BigBlueButton](https://bigbluebutton.org/) 
+sessions into videos (e.g., `.mp4`).
+
 
 ## Docker
+
+### Prerequisites
+
+You need docker installed on your machine:
+
+```commandline
+sudo apt-get install docker.io
+```
+
 
 ### Version
 
@@ -16,7 +28,7 @@ Timestamp: Dec 27, 2020
 
 ### Build
 
-You can build the image like this
+You can build the image locally like this:
 
 ```commandline
 docker build -t bbbr .
@@ -25,22 +37,29 @@ docker build -t bbbr .
 
 ### Run
 
+Once built, you can run the image with this command:
+
 ```commandline
 docker run -u $(id -u):$(id -g) \
     -v /local/dir:/container/dir \
     -it bbbr:latest
 ```
 
+**NB:** `-v` maps a folder from the host into the container. You need this 
+for the presentation download and conversion.
+
 
 ### Scripts
 
-The following scripts are available:
+The following scripts are available in the container:
 
 * `bbbr_download` - wraps `download.py`
 * `bbbr_make_xges` - wraps `make-xges.py`
 
 
 ## Example
+
+The following steps demonstrate how to 
 
 * start the docker container
 
@@ -57,7 +76,7 @@ The following scripts are available:
   bbbr_download "PRESENTATION_LINK" /opt/test
   ```
 
-* create xges project:
+* create an xges project:
 
   ```commandline
   bbbr_make_xges /opt/test /opt/test/test.xges
