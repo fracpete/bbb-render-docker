@@ -46,7 +46,7 @@ docker run -u $(id -u):$(id -g) \
 ```
 
 **NB:** `-v` maps a folder from the host into the container. You need this 
-for the presentation download and conversion.
+for downloading the presentation and converting it into a video.
 
 
 ### Scripts
