@@ -1,4 +1,3 @@
 #!/bin/bash
 
-cd /opt/bbb-render
-python3 download.py "$@"
+python3 /opt/bbb-render/download.py "$@"

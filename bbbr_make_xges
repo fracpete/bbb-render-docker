@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /opt/bbb-render
-python3 make-xges.py "$@"
+python3 /opt/bbb-render/make-xges.py "$@"
+
