@@ -15,3 +15,5 @@ RUN git clone https://github.com/plugorgau/bbb-render.git && \
 COPY bbbr* /usr/bin/
 COPY bash.bashrc /etc/bash.bashrc
 
+WORKDIR /workspace
+
