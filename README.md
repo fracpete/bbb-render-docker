@@ -28,22 +28,23 @@ Timestamp: Dec 27, 2020
 
 ### Prebuilt image
 
-* You can pull a prebuilt image from Docker Hub:
+* Create a directory to house all the presentation files, e.g.:
 
-  ```commandline
-  docker pull fracpete/bbb-render:latest
   ```
-
-* Run the image as follows:
+  $HOME/bbb
+  ```
+  
+* Get the link from a recorded session by copying the link from the *Presentation* button in the *Formats* column
+* Convert the presentation directly into `presentation.mp4` using this command (replace `PRESENTATION_LINK`, of course):
 
   ```commandline
   docker run -u $(id -u):$(id -g) \
-      -v /local/dir:/workspace \
-      -it fracpete/bbb-render:latest
+      -v $HOME/bbb:/workspace \
+      -it fracpete/bbb-render:latest \
+      bbbr_convert "PRESENTATION_LINK" presentation
   ```
 
-  **NB:** `-v` maps a folder from the host into the container. You need this 
-  for downloading the presentation and converting it into a video.
+* This will give you a
 
 
 ### Build local image
@@ -100,7 +101,7 @@ the user name, of course):
 
 The following scripts are available in the container:
 
-* `bbbr_convert` - downloads and converts a presentation
+* `bbbr_convert` - downloads and converts a presentation, use `-h` for a help screen
 * `bbbr_download` - just downloads a presentation (wraps `download.py`)
 * `bbbr_make_xges` - generates an xges project (wraps `make-xges.py`)
 
@@ -109,13 +110,13 @@ The following scripts are available in the container:
 
 The following steps demonstrate how to convert a presentation into an `.mp4` video:
 
-* create a directory to house all the files, e.g.:
+* Create a directory to house all the files, e.g.:
 
   ```
   $HOME/bbb
   ```
 
-* start the docker container
+* Start the docker container
 
   ```commandline
   docker run -u $(id -u):$(id -g) \
@@ -123,8 +124,8 @@ The following steps demonstrate how to convert a presentation into an `.mp4` vid
       -t bbbr:latest
   ```
 
-* copy the link from a recorded session (copy the link from the *Presentation* button in the *Formats* column)
-* download and convert the presentation into `presentation.mp4` 
+* Get the link from a recorded session by copying the link from the *Presentation* button in the *Formats* column
+* Download and convert the presentation into `presentation.mp4` 
 
   ```commandline
   bbbr_convert "PRESENTATION_LINK" presentation
@@ -132,19 +133,19 @@ The following steps demonstrate how to convert a presentation into an `.mp4` vid
 
 The above command combines the following three commands:
 
-* dowload the presentation
+* Dowload the presentation
 
   ```commandline
   bbbr_download "PRESENTATION_LINK" /workspace
   ```
 
-* create an xges project:
+* Create an xges project:
 
   ```commandline
   bbbr_make_xges /workspace /workspace/presentation.xges
   ```
 
-* convert the xges project into an `.mp4` video:
+* Convert the xges project into an `.mp4` video:
 
   ```commandline
   ges-launch-1.0 --load /workspace/presentation.xges -o /workspace/presentation.mp4
