@@ -100,8 +100,9 @@ the user name, of course):
 
 The following scripts are available in the container:
 
-* `bbbr_download` - wraps `download.py`
-* `bbbr_make_xges` - wraps `make-xges.py`
+* `bbbr_convert` - downloads and converts a presentation
+* `bbbr_download` - just downloads a presentation (wraps `download.py`)
+* `bbbr_make_xges` - generates an xges project (wraps `make-xges.py`)
 
 
 ## Example
