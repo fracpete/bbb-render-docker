@@ -38,7 +38,7 @@ Timestamp: Dec 27, 2020
 
   ```commandline
   docker run -u $(id -u):$(id -g) \
-      -v /local/dir:/container/dir \
+      -v /local/dir:/workspace \
       -it fracpete/bbb-render:latest
   ```
 
@@ -58,7 +58,7 @@ Timestamp: Dec 27, 2020
 
   ```commandline
   docker run -u $(id -u):$(id -g) \
-      -v /local/dir:/container/dir \
+      -v /local/dir:/workspace \
       -it bbbr:latest
   ```
 
@@ -108,30 +108,44 @@ The following scripts are available in the container:
 
 The following steps demonstrate how to convert a presentation into an `.mp4` video:
 
+* create a directory to house all the files, e.g.:
+
+  ```
+  $HOME/bbb
+  ```
+
 * start the docker container
 
   ```commandline
   docker run -u $(id -u):$(id -g) \
-      -v /some/where:/opt/test \
+      -v $HOME/bbb:/workspace \
       -t bbbr:latest
   ```
 
 * copy the link from a recorded session (copy the link from the *Presentation* button in the *Formats* column)
+* download and convert the presentation into `presentation.mp4` 
+
+  ```commandline
+  bbbr_convert "PRESENTATION_LINK" presentation
+  ```
+
+The above command combines the following three commands:
+
 * dowload the presentation
 
   ```commandline
-  bbbr_download "PRESENTATION_LINK" /opt/test
+  bbbr_download "PRESENTATION_LINK" /workspace
   ```
 
 * create an xges project:
 
   ```commandline
-  bbbr_make_xges /opt/test /opt/test/test.xges
+  bbbr_make_xges /workspace /workspace/presentation.xges
   ```
 
 * convert the xges project into an `.mp4` video:
 
   ```commandline
-  ges-launch-1.0 --load /opt/test/test.xges -o /opt/test/test.mp4
+  ges-launch-1.0 --load /workspace/presentation.xges -o /workspace/presentation.mp4
   ```
 
