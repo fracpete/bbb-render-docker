@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]
+then
+  echo
+  echo "Usage: bbr_convert <PRESENTATION_LINK> <VIDEOFILE_PREFIX>"
+  echo
+  echo "Example:"
+  echo "  bbr_convert \"https://...\" my_presentation"
+  echo "  this will generate a video file called \"my_presentation\"".
+  echo
+  exit 0
+fi
+
+echo "Downloading $1..."
+bbbr_download "$1" /workspace
+
+echo "Creating xges project..."
+bbbr_make_xges /workspace /workspace/$2.xges
+
+echo "Generating video..."
+ges-launch-1.0 --load /workspace/$2.xges -o /workspace/$2.mp4
+
