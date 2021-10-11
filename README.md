@@ -28,23 +28,11 @@ Timestamp: Dec 27, 2020
 
 ### Prebuilt image
 
-* Create a directory to house all the presentation files, e.g.:
+The following image is available from docker hub:
 
-  ```
-  $HOME/bbb
-  ```
-  
-* Get the link from a recorded session by copying the link from the *Presentation* button in the *Formats* column
-* Convert the presentation directly into `presentation.mp4` using this command (replace `PRESENTATION_LINK`, of course):
-
-  ```commandline
-  docker run -u $(id -u):$(id -g) \
-      -v $HOME/bbb:/workspace \
-      -it fracpete/bbb-render:latest \
-      bbbr_convert "PRESENTATION_LINK" presentation
-  ```
-
-* This will give you a
+```
+fracpete/bbb-render:latest
+```
 
 
 ### Build local image
@@ -116,19 +104,21 @@ The following steps demonstrate how to convert a presentation into an `.mp4` vid
   $HOME/bbb
   ```
 
-* Start the docker container
+* Change into that directory:
 
   ```commandline
-  docker run -u $(id -u):$(id -g) \
-      -v $HOME/bbb:/workspace \
-      -t bbbr:latest
+  cd $HOME/bbb
   ```
 
 * Get the link from a recorded session by copying the link from the *Presentation* button in the *Formats* column
-* Download and convert the presentation into `presentation.mp4` 
+
+* Run the `bbbr_convert` command as follows (replace `PRESENTATION_LINK` with the actual link and `presentation_name` with the name that you want for the .mp4 file) to download and convert the BBB presentation:
 
   ```commandline
-  bbbr_convert "PRESENTATION_LINK" presentation
+  docker run -u $(id -u):$(id -g) \
+      -v `pwd`:/workspace \
+      -t fracpete/bbb-render:latest \
+      bbbr_convert "PRESENTATION_LINK" presentation_name
   ```
 
 The above command combines the following three commands:
@@ -142,12 +132,12 @@ The above command combines the following three commands:
 * Create an xges project:
 
   ```commandline
-  bbbr_make_xges /workspace /workspace/presentation.xges
+  bbbr_make_xges /workspace /workspace/presentation_name.xges
   ```
 
 * Convert the xges project into an `.mp4` video:
 
   ```commandline
-  ges-launch-1.0 --load /workspace/presentation.xges -o /workspace/presentation.mp4
+  ges-launch-1.0 --load /workspace/presentation_name.xges -o /workspace/presentation_name.mp4
   ```
 
