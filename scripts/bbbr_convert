@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# the usage of this script
+function usage()
+{
+   echo
+   echo "${0##*/} -u <url> -n <name> [-v <version>] [-w <dir>] [-h]"
+   echo
+   echo "Converts a BigBlueButton presentation into a .mp4 video."
+   echo
+   echo " -h   this help"
+   echo " -u   <url>"
+   echo "      the link to the presentation"
+   echo " -n   <name>"
+   echo "      the name for the generated presentation file (excl ext, no spaces)"
+   echo " -v   <version>"
+   echo "      the version of the docker image to use, default: $VERSION"
+   echo " -w   <dir>"
+   echo "      the version of the docker image to use, default: $WORKDIR"
+   echo
+}
+
+URL=""
+NAME=""
+VERSION="2021-06-10"
+WORKDIR="."
+IMAGE="fracpete/bbb-render"
+
+# interprete parameters
+while getopts ":hu:n:v:w:" flag
+do
+   case $flag in
+      u) URL=$OPTARG
+         ;;
+      n) NAME=$OPTARG
+         ;;
+      v) VERSION=$OPTARG
+         ;;
+      w) WORKDIR=$OPTARG
+         ;;
+      h) usage
+         exit 0
+         ;;
+      *) usage
+         exit 1
+         ;;
+   esac
+done
+
+if [ "$URL" = "" ]
+then
+  echo
+  echo "No presentation URL provided!"
+  echo
+  usage
+  exit 1
+fi
+
+if [ "$NAME" = "" ]
+then
+  echo
+  echo "No presentation name provided!"
+  echo
+  usage
+  exit 2
+fi
+
+CURRDIR=`pwd`
+
+if [ ! "$WORKDIR" = "." ]
+then
+  cd "$WORKDIR"
+fi
+
+docker run -u $(id -u):$(id -g) \
+    -v `pwd`:/workspace \
+    -t $IMAGE:$VERSION \
+    bbbr_convert "$URL" "$NAME"
+
+if [ ! "$WORKDIR" = "." ]
+then
+  cd "$CURRDIR"
+fi
+

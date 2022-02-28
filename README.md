@@ -95,8 +95,42 @@ The following scripts are available in the container:
 * `bbbr_download` - just downloads a presentation (wraps `download.py`)
 * `bbbr_make_xges` - generates an xges project (wraps `make-xges.py`)
 
+For launching the docker container and convert a presentation you can use this script 
+(use `-h` to see all available options):
 
-## Example
+* [scripts/bbbr_convert](scripts/bbbr_convert)
+
+
+## Examples
+
+### scripts/bbbr_convert
+
+Prerequisites:
+
+* Download the [scripts/bbbr_convert](scripts/bbbr_convert) script
+* Place the script on a directory that is in your `$PATH` environment variable 
+  (e.g., `$HOME/bin` or `/usr/local/bin`)
+
+The following steps convert a presentation into an `.mp4` video:
+
+* If necessary, create a working directory, e.g.:
+
+  ```
+  $HOME/bbb
+  ```
+
+* Get the link from a recorded session by copying the link from the
+  *Presentation* button in the *Formats* column.
+
+* Run the following command to generate the `PRESENTATION_NAME.mp4` 
+  video file in the `$HOME/bbb` directory:
+
+  ```commandline
+  bbbr_convert -u "PRESENTATION_LINK" -n "PRESENTATION_NAME" -w "$HOME/bbb"
+  ```
+
+
+### Docker
 
 The following steps demonstrate how to convert a presentation into an `.mp4` video:
 
@@ -112,15 +146,18 @@ The following steps demonstrate how to convert a presentation into an `.mp4` vid
   cd $HOME/bbb
   ```
 
-* Get the link from a recorded session by copying the link from the *Presentation* button in the *Formats* column
+* Get the link from a recorded session by copying the link from the
+  *Presentation* button in the *Formats* column.
 
-* Run the `bbbr_convert` command as follows (replace `PRESENTATION_LINK` with the actual link and `presentation_name` with the name that you want for the .mp4 file) to download and convert the BBB presentation:
+* Run the `bbbr_convert` command as follows (replace `PRESENTATION_LINK` with
+  the actual link and `PRESENTATION_NAME` with the name that you want for the
+  .mp4 file) to download and convert the BBB presentation:
 
   ```commandline
   docker run -u $(id -u):$(id -g) \
       -v `pwd`:/workspace \
       -t fracpete/bbb-render:latest \
-      bbbr_convert "PRESENTATION_LINK" presentation_name
+      bbbr_convert "PRESENTATION_LINK" PRESENTATION_NAME
   ```
 
 The above command combines the following three commands:
@@ -134,12 +171,12 @@ The above command combines the following three commands:
 * Create an xges project:
 
   ```commandline
-  bbbr_make_xges /workspace /workspace/presentation_name.xges
+  bbbr_make_xges /workspace /workspace/PRESENTATION_NAME.xges
   ```
 
 * Convert the xges project into an `.mp4` video:
 
   ```commandline
-  ges-launch-1.0 --load /workspace/presentation_name.xges -o /workspace/presentation_name.mp4
+  ges-launch-1.0 --load /workspace/PRESENTATION_NAME.xges -o /workspace/PRESENTATION_NAME.mp4
   ```
 
