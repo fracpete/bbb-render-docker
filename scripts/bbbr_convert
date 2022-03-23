@@ -16,7 +16,7 @@ function usage()
    echo " -v   <version>"
    echo "      the version of the docker image to use, default: $VERSION"
    echo " -w   <dir>"
-   echo "      the version of the docker image to use, default: $WORKDIR"
+   echo "      the dir for temp files and the final video, default: $WORKDIR"
    echo
 }
 
@@ -26,7 +26,7 @@ VERSION="2021-06-10"
 WORKDIR="."
 IMAGE="fracpete/bbb-render"
 
-# interprete parameters
+# interpret parameters
 while getopts ":hu:n:v:w:" flag
 do
    case $flag in
