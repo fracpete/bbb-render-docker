@@ -2,7 +2,7 @@
 
 ## bbbr_convert
 
-Wraps the call of the [bbbr_convert](bbbr_convert) script inside the docker container conveniently in a bash script
+Wraps the call of the [bbbr_convert](../bbbr_convert) script inside the docker container conveniently in a bash script
 with the following options:
 
 ```
