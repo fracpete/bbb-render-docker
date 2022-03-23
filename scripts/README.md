@@ -20,3 +20,5 @@ Converts a BigBlueButton presentation into a .mp4 video.
  -w   <dir>
       the dir for temp files and the final video, default: .
 ```
+
+**NB:** A dedicated work directory (`-w`) is recommended, since a lot of files will get downloaded to generate the final video.
