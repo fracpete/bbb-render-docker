@@ -42,7 +42,7 @@ function usage()
 
 URL=""
 NAME=""
-VERSION="2021-06-10"
+VERSION="2022-04-13"
 WORKDIR="."
 IMAGE="fracpete/bbb-render"
 START=""

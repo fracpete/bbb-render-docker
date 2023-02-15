@@ -20,10 +20,10 @@ sudo apt-get install docker.io
 Uses the following hash of the bbb-render repo:
 
 ```
-e137d9d9c72fe7985e72338d4fa0a748f39e2b08
+f93f900aaa4cd469d3e1479e1027687c41d1c877
 ```
 
-Timestamp: Jun 10, 2021
+Timestamp: Apr 13, 2022
 
 
 ### Prebuilt images
@@ -32,6 +32,7 @@ The following images are available from docker hub:
 
 ```
 fracpete/bbb-render:latest
+fracpete/bbb-render:2022-04-13
 fracpete/bbb-render:2021-06-10
 fracpete/bbb-render:2020-12-27
 ```
