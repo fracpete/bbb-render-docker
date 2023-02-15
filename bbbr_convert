@@ -1,23 +1,105 @@
 #!/bin/bash
 
-if [ "$1" = "-h" ] || [ "$1" = "--help" ]
+# the usage of this script
+function usage()
+{
+   echo
+   echo "${0##*/} -u <url> -n <name> [-s <time>] [-e <time>] [-W <width>] [-H <height>] [-c <perc>] [-S] [-a] [-h]"
+   echo
+   echo "Converts a BigBlueButton presentation into a .mp4 video."
+   echo
+   echo " -h   this help"
+   echo " -u   <url>"
+   echo "      the link to the presentation"
+   echo " -n   <name>"
+   echo "      the name for the generated presentation file (excl ext, no spaces)"
+   echo " -s   <time>"
+   echo "      the start time"
+   echo " -e   <time>"
+   echo "      the end time"
+   echo " -W   <width>"
+   echo "      the width of the presentation, default: $WIDTH"
+   echo " -H   <height>"
+   echo "      the height of the presentation, default: $HEIGHT"
+   echo " -c   <perc>"
+   echo "      the percentage of the screen to reserve for the webcam (0-100), default: $WEBCAMPERC"
+   echo " -S   stretch the webcam by 33% to correct aspect ratio"
+   echo " -a   add annotations like whiteboard and red dot cursor"
+   echo
+   echo "Some accepted TIME formats:"
+   echo "- ss seconds (example: 1500 or 1500.3)"
+   echo "- mm:ss minutes and seconds"
+   echo "- hh:mm:ss hours minutes and seconds"
+   echo "- dd:hh:mm:ss days, hours, minutes and seconds"
+   echo
+}
+
+URL=""
+NAME=""
+START=""
+END=""
+WIDTH="1920"
+HEIGHT="1080"
+WEBCAMPERC="20"
+STRETCHWEBCAM=""
+ANNOTATIONS=""
+
+# interpret parameters
+while getopts ":hu:n:s:e:W:H:c:aS" flag
+do
+   case $flag in
+      u) URL=$OPTARG
+         ;;
+      n) NAME=$OPTARG
+         ;;
+      s) START="--start=$OPTARG"
+         ;;
+      e) END="--end=$OPTARG"
+         ;;
+      W) WIDTH=$OPTARG
+         ;;
+      H) HEIGHT=$OPTARG
+         ;;
+      c) WEBCAMPERC=$OPTARG
+         ;;
+      a) ANNOTATIONS="--annotations"
+         ;;
+      S) STRETCHWEBCAM="--stretch-webcam"
+         ;;
+      h) usage
+         exit 0
+         ;;
+      *) usage
+         echo "Unhandled option: flag=$flag arg=$OPTARG"
+         exit 1
+         ;;
+   esac
+done
+
+if [ "$URL" = "" ]
 then
   echo
-  echo "Usage: bbr_convert <PRESENTATION_LINK> <VIDEOFILE_PREFIX>"
+  echo "No presentation URL provided!"
   echo
-  echo "Example:"
-  echo "  bbr_convert \"https://...\" my_presentation"
-  echo "  this will generate a video file called \"my_presentation\"".
-  echo
-  exit 0
+  usage
+  exit 1
 fi
 
-echo "Downloading $1..."
-bbbr_download "$1" /workspace
+if [ "$NAME" = "" ]
+then
+  echo
+  echo "No presentation name provided!"
+  echo
+  usage
+  exit 2
+fi
+
+echo "Downloading $URL..."
+bbbr_download "$URL" /workspace
 
 echo "Creating xges project..."
-bbbr_make_xges /workspace /workspace/$2.xges
+bbbr_make_xges /workspace /workspace/$NAME.xges $START $END --width=$WIDTH --height=$HEIGHT --webcam-size=$WEBCAMPERC $ANNOTATIONS $STRETCHWEBCAM
 
 echo "Generating video..."
-ges-launch-1.0 --load /workspace/$2.xges -o /workspace/$2.mp4
+ges-launch-1.0 --load /workspace/$NAME.xges -o /workspace/$NAME.mp4
 

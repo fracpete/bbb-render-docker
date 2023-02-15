@@ -10,7 +10,7 @@ sessions into videos (e.g., `.mp4`).
 
 You need docker installed on your machine:
 
-```commandline
+```bash
 sudo apt-get install docker.io
 ```
 
@@ -41,13 +41,13 @@ fracpete/bbb-render:2020-12-27
 
 * You can build the image locally like this:
 
-  ```commandline
+  ```bash
   docker build -t bbbr .
   ```
 
 * Once built, you can run the image with this command:
 
-  ```commandline
+  ```bash
   docker run -u $(id -u):$(id -g) \
       -v /local/dir:/workspace \
       -it bbbr:latest
@@ -64,13 +64,13 @@ the user name, of course):
 
 * log into Docker Hub
 
-  ```comandline
+  ```bash
   docker login
   ```
 
 * tag the image for the push
 
-  ```commandline
+  ```bash
   docker tag \
       bbbr:latest \
       fracpete/bbb-render:latest
@@ -78,7 +78,7 @@ the user name, of course):
 
 * push the image
 
-  ```commandline
+  ```bash
   docker push fracpete/bbb-render:latest
   ```
 
@@ -115,7 +115,7 @@ The following steps convert a presentation into an `.mp4` video:
 
 * If necessary, create a working directory, e.g.:
 
-  ```
+  ```bash
   $HOME/bbb
   ```
 
@@ -125,7 +125,7 @@ The following steps convert a presentation into an `.mp4` video:
 * Run the following command to generate the `PRESENTATION_NAME.mp4` 
   video file in the `$HOME/bbb` directory:
 
-  ```commandline
+  ```bash
   bbbr_convert -u "PRESENTATION_LINK" -n "PRESENTATION_NAME" -w "$HOME/bbb"
   ```
 
@@ -136,13 +136,13 @@ The following steps demonstrate how to convert a presentation into an `.mp4` vid
 
 * Create a directory to house all the files, e.g.:
 
-  ```
+  ```bash
   $HOME/bbb
   ```
 
 * Change into that directory:
 
-  ```commandline
+  ```bash
   cd $HOME/bbb
   ```
 
@@ -153,30 +153,29 @@ The following steps demonstrate how to convert a presentation into an `.mp4` vid
   the actual link and `PRESENTATION_NAME` with the name that you want for the
   .mp4 file) to download and convert the BBB presentation:
 
-  ```commandline
+  ```bash
   docker run -u $(id -u):$(id -g) \
       -v `pwd`:/workspace \
       -t fracpete/bbb-render:latest \
-      bbbr_convert "PRESENTATION_LINK" PRESENTATION_NAME
+      bbbr_convert -u "PRESENTATION_LINK" -n PRESENTATION_NAME
   ```
 
 The above command combines the following three commands:
 
-* Dowload the presentation
+* Download the presentation
 
-  ```commandline
+  ```bash
   bbbr_download "PRESENTATION_LINK" /workspace
   ```
 
 * Create an xges project:
 
-  ```commandline
+  ```bash
   bbbr_make_xges /workspace /workspace/PRESENTATION_NAME.xges
   ```
 
 * Convert the xges project into an `.mp4` video:
 
-  ```commandline
+  ```bash
   ges-launch-1.0 --load /workspace/PRESENTATION_NAME.xges -o /workspace/PRESENTATION_NAME.mp4
   ```
-
